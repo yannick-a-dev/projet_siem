@@ -1,0 +1,9 @@
+.main-container {
+    margin: 50px;
+  }
+  .min-height-500 {
+    min-height: 500px;
+}
+.no-flex-wrap {
+    flex-wrap: inherit !important;
+}

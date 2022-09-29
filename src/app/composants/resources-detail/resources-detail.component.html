@@ -1,0 +1,93 @@
+<div class="main-container">
+ 
+  <div class="search-container">
+      <form [formGroup]="searchForm">
+          <mat-form-field appearance="fill">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="category" (selectionChange)="onCategoryChange($event);">
+                  <mat-option></mat-option>
+                  <mat-option *ngFor="let category of this.categories" [value]="category.id">
+                      {{category.name}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+              <mat-label>Sub-Category</mat-label>
+              <mat-select formControlName="subCategory">
+                  <mat-option></mat-option>
+                  <mat-option *ngFor="let subCategory of this.subCategories" [value]="subCategory.id">
+                      {{subCategory.name}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+              <mat-label>Search</mat-label>
+              <input matInput formControlName="search">
+          </mat-form-field>
+          <button mat-button class="bouton-principal" (click)="onSearch();">
+              <mat-icon>search</mat-icon>
+              Search
+          </button>
+          <button mat-button class="validation-button to-right" (click)="onAddResource();">
+              <mat-icon>add</mat-icon>
+              Add new resource
+          </button>
+      </form>
+  </div>
+  <div>
+      <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="category">
+              <mat-header-cell color="white" *matHeaderCellDef>Category</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.categoryName}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="subCategory">
+              <mat-header-cell color="white" *matHeaderCellDef>SubCategory</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.subCategoryName}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+              <mat-header-cell color="white" *matHeaderCellDef>Name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="reference">
+              <mat-header-cell color="white" *matHeaderCellDef>Reference</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.reference}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="picture">
+              <mat-header-cell color="white" *matHeaderCellDef>Picture</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <img class="resource-picture" (click)="onPictureClick($event);" *ngFor="let picture of row.pictures"
+                      [src]="domSanitizer.bypassSecurityTrustUrl(picture.contentBase64)" height="50px" alt="picture">
+              </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="viewAction">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="onViewResource(row)">
+                      <mat-icon>visibility</mat-icon>
+                  </button>
+              </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="editAction">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="onUpdateResource(row)">
+                      <mat-icon>edit</mat-icon>
+                  </button>
+              </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="deleteAction">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="onDeleteResource(row)">
+                      <mat-icon>delete</mat-icon>
+                  </button>
+              </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns" mat-ripple [matRippleDisabled]="true"></mat-row>
+      </mat-table>
+      <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="onSearch($event)" aria-label="Select page">
+  </mat-paginator> 
+  </div>
+</div>
